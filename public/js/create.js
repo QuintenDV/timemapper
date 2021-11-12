@@ -1,15 +1,17 @@
 jQuery(function($) {
-  var $form = $('.js-connect form')
-    , $input = $('.js-connect input[name="url"]')
-    ;
+  showPresetTimeline();
 
-  $(".gdrive-import").click(onGdriveImportClick);
-  $input.change(onUrlChange);
-  $('.js-demo-sheet').click(onDemoSheetClick);
+  // var $form = $('.js-connect form')
+  //   , $input = $('.js-connect input[name="url"]')
+  //   ;
 
-  // we will assume this always loads prior to anyone hitting the drive button
-  // (if not we would need to double-checker picker is loaded in drive stuff)
-  gapi.load('picker');
+  // $(".gdrive-import").click(onGdriveImportClick);
+  // $input.change(onUrlChange);
+  // $('.js-demo-sheet').click(onDemoSheetClick);
+
+  // // we will assume this always loads prior to anyone hitting the drive button
+  // // (if not we would need to double-checker picker is loaded in drive stuff)
+  // gapi.load('picker');
 });
 
 var getGDrivePickerOauth = function(callback) {
@@ -92,7 +94,6 @@ var onUrlChange = function(e) {
   // 1. Check we can access the gdoc - if not we'll set an error that will show
   // when you try to submit
   var url = recline.Backend.GDocs.getGDocsApiUrls(e.target.value).spreadsheetAPI;
-
   $.ajax(url, {
     type: "GET",
     success: function (data) {
@@ -125,20 +126,21 @@ var onUrlChange = function(e) {
   });
 }
 
-// bit of UX to allow users to use a demo spreadsheet as a way to get started
-var onDemoSheetClick = function(e) {
-  e.preventDefault();
-  var $input = $('.js-connect input[name="url"]')
+var showPresetTimeline = function(e) {
+  var $form = $('.js-connect form');
+  var $submit = $form.find('.js-submit');
+  var $sheetUrl = $('.js-connect input[name="url"]');
+  var $name = $('.js-connect input[name="name"]');
+  var $title = $('.js-connect input[name="title"]');
 
-  $('html,body').animate({
-    scrollTop: $('#connect').offset().top
-    },
-    'fast'
-  );
+  var $typeRadio = $('.js-connect input[value="timeline"]');
+  var $dateRadio = $('.js-connect input[value="true"]');
 
-  var url = $(e.target).data('url');
-  $input.val(url);
-  // highlight the input so people realize it ahs changed
-  $input.stop().css("background-color", "#FFFF9C");
-  $input.change();
+  $sheetUrl.val("https://docs.google.com/spreadsheets/d/e/2PACX-1vRcKMESG0vL12-1rvpYoq440D59DA_QZaJ5V-aRw7aX-Q7FI881O54IAgMaPAPVMNgbH1SvQTC4PFSn/pubhtml")
+  $name.val("World War I - Ypres");
+  $title.val("Ypres in World War I");
+  $typeRadio.prop("checked", true);
+  $dateRadio.prop("checked", true);
+
+  $submit.click()
 }
