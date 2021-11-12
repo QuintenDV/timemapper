@@ -113,13 +113,8 @@ app.all('*', function(req, res, next) {
 // Main pages
 // ======================================
 
-app.get('/', function(req, res){
-  if (req.user) {
-    routes.dashboard(req, res);
-  } else {
-    res.render('index.html', {title: 'Home'});
-  }
-});
+app.get('/', routes.create);
+app.post('/', routes.createPost);
 
 app.get('/create', routes.create);
 app.post('/create', routes.createPost);
